@@ -1,0 +1,473 @@
+---
+// src/pages/index.astro
+import "../styles/global.css";
+import 'aos/dist/aos.css';
+// --- Komponen Layout (Biasanya di file terpisah: src/layouts/Layout.astro) ---
+interface Props {
+	title: string;
+}
+const { title } = Astro.props;
+
+---
+
+<!doctype html>
+<html lang="id" class="scroll-smooth">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="description" content="Aplikasi Absensi Modern dengan UI Glassmorphism" />
+	<meta name="viewport" content="width=device-width" />
+	<!-- Favicon dasar -->
+	<link rel="icon" href="/favicon.ico" sizes="any">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+	<!-- Apple Touch -->
+	<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+	<!-- Android/Chrome -->
+	<link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+	<link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
+
+	<!-- PWA (kalau pakai manifest.json) -->
+	<link rel="manifest" href="/site.webmanifest">
+	<meta name="generator" content={Astro.generator} />
+	<title>Nexa - Pro | Next Attendance Professional</title>
+	
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+	
+	<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+	<style>
+		body {
+			font-family: 'Poppins', sans-serif;
+			background-color: #0B0F19; /* Warna dasar gelap untuk kontras */
+			color: #E2E8F0; /* Teks off-white */
+			position: relative;
+			overflow-x: hidden;
+		}
+
+		/* Styling untuk "blob" animasi di latar belakang */
+		.background-shapes {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			z-index: -1;
+			overflow: hidden;
+		}
+
+		.blob {
+			position: absolute;
+			border-radius: 50%;
+			filter: blur(120px);
+			opacity: 0.25;
+		}
+
+		.blob1 {
+			width: 500px;
+			height: 500px;
+			background: #6366F1; /* Indigo */
+			top: -200px;
+			left: -200px;
+			animation: move 25s infinite alternate;
+		}
+
+		.blob2 {
+			width: 400px;
+			height: 400px;
+			background: #EC4899; /* Pink */
+			bottom: -150px;
+			right: -150px;
+			animation: move 30s infinite alternate-reverse;
+		}
+		
+		.blob3 {
+			width: 300px;
+			height: 300px;
+			background: #10B981; /* Emerald */
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			animation: move 35s infinite alternate;
+		}
+
+
+		@keyframes move {
+			from {
+				transform: translate(0, 0) rotate(0deg) scale(1);
+			}
+			to {
+				transform: translate(150px, 50px) rotate(120deg) scale(1.2);
+			}
+		}
+
+		/* Kelas untuk efek Glassmorphism yang disempurnakan */
+		.glass-card {
+			background: rgba(30, 41, 59, 0.3); /* Latar belakang lebih gelap */
+			-webkit-backdrop-filter: blur(20px);
+			backdrop-filter: blur(20px);
+			border: 1px solid rgba(255, 255, 255, 0.1);
+			box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+			transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+		}
+
+		.glass-card:hover {
+			border-color: rgba(255, 255, 255, 0.3);
+			transform: translateY(-5px);
+		}
+		
+		/* Animasi melayang untuk gambar hero */
+		@keyframes float {
+			0% { transform: translateY(0px); }
+			50% { transform: translateY(-20px); }
+			100% { transform: translateY(0px); }
+		}
+		.floating-image {
+			animation: float 5s ease-in-out infinite;
+		}
+		
+		/* Efek underline untuk navigasi */
+		.nav-link {
+			position: relative;
+			transition: color 0.3s ease;
+		}
+		.nav-link::after {
+			content: '';
+			position: absolute;
+			width: 0;
+			height: 2px;
+			bottom: -4px;
+			left: 50%;
+			transform: translateX(-50%);
+			background-color: #818CF8;
+			transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+		}
+		.nav-link:hover::after {
+			width: 100%;
+		}
+		.nav-link:hover {
+			color: #C7D2FE;
+		}
+		
+		/* Gradient Text */
+		.gradient-text {
+			background: linear-gradient(to right, #A5B4FC, #EC4899);
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+		}
+	</style>
+</head>
+<body class="text-slate-300">
+	<div class="background-shapes">
+		<div class="blob blob1"></div>
+		<div class="blob blob2"></div>
+		<div class="blob blob3"></div>
+	</div>
+
+	<header class="glass-card sticky top-4 mx-auto max-w-6xl rounded-xl z-50 mt-4">
+		<nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+			<a href="/" class="text-2xl font-extrabold text-white">Absensi<span class="text-indigo-400">Pro</span></a>
+			
+			<div class="hidden md:flex items-center space-x-10">
+				<a href="#keunggulan" class="nav-link font-medium">Keunggulan</a>
+				<a href="#harga" class="nav-link font-medium">Harga</a>
+				<a href="#perbandingan" class="nav-link font-medium">Perbandingan</a>
+			</div>
+			<a href="#" class="hidden md:inline-block bg-indigo-500 text-white font-bold px-6 py-2.5 rounded-lg hover:bg-indigo-600 transition-all duration-300 shadow-lg shadow-indigo-500/30 transform hover:scale-105">
+				Mulai Uji Coba
+			</a>
+
+			<button id="mobile-menu-button" class="md:hidden text-slate-300 focus:outline-none">
+				<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+			</button>
+		</nav>
+	</header>
+	
+	<div id="mobile-menu" class="hidden md:hidden glass-card fixed top-24 right-4 left-4 rounded-xl p-4">
+		<a href="#keunggulan" class="block hover:bg-slate-700/50 px-4 py-3 rounded-md">Keunggulan</a>
+		<a href="#harga" class="block hover:bg-slate-700/50 px-4 py-3 rounded-md">Harga</a>
+		<a href="#perbandingan" class="block hover:bg-slate-700/50 px-4 py-3 rounded-md">Perbandingan</a>
+		<div class="mt-4">
+			<a href="#" class="w-full text-center block bg-indigo-500 text-white font-semibold px-5 py-3 rounded-lg hover:bg-indigo-600 transition-all duration-300">
+				Mulai Uji Coba
+			</a>
+		</div>
+	</div>
+
+	<main>
+		<section class="container mx-auto px-6 pt-24 pb-20 md:py-32 text-center">
+			<h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight" data-aos="fade-up">
+				Sistem Absensi Cerdas, <br class="hidden md:block" /> <span class="gradient-text">Bukan Sekadar Pencatat Waktu.</span>
+			</h1>
+			<p class="mt-6 text-lg md:text-xl max-w-3xl mx-auto text-slate-400" data-aos="fade-up" data-aos-delay="100">
+				AbsensiPro adalah ekosistem lengkap untuk manajemen kehadiran. Fokus kami murni pada absensi, membuatnya lebih akurat, detail, dan mudah diintegrasikan daripada solusi all-in-one.
+			</p>
+			<div class="mt-10 flex flex-col sm:flex-row justify-center items-center gap-4" data-aos="fade-up" data-aos-delay="200">
+				<a href="#harga" class="bg-indigo-500 text-white font-bold px-8 py-4 rounded-lg hover:bg-indigo-600 transition-all duration-300 shadow-lg shadow-indigo-500/30 transform hover:scale-105">
+					Lihat Paket Harga
+				</a>
+				<a href="#" class="font-bold text-white hover:text-indigo-300 transition-colors">
+					Jadwalkan Demo →
+				</a>
+			</div>
+			<div class="mt-16 md:mt-24" data-aos="fade-up" data-aos-delay="300">
+					<img 
+						src="https://placehold.co/800x500/1E293B/FFFFFF?text=Ekosistem+AbsensiPro" 
+						alt="Tampilan Dashboard Aplikasi Absensi" 
+						class="rounded-xl w-full max-w-4xl mx-auto shadow-2xl shadow-black/50 floating-image"
+						onerror="this.onerror=null;this.src='https://placehold.co/800x500/cccccc/ffffff?text=Image+Not+Found';"
+					/>
+				</div>
+		</section>
+		
+		<section id="keunggulan" class="py-20 md:py-24">
+			<div class="container mx-auto px-6 text-center">
+				<h2 class="text-3xl md:text-4xl font-bold text-white" data-aos="fade-up">Dirancang untuk Karyawan & Admin</h2>
+				<p class="mt-4 text-lg text-slate-400 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">Kami memikirkan setiap detail untuk memberikan pengalaman terbaik bagi semua pengguna.</p>
+				<div class="grid md:grid-cols-3 gap-8 mt-12 text-left">
+					<div class="glass-card p-8 rounded-xl" data-aos="fade-up" data-aos-delay="200">
+						<h3 class="font-bold text-xl text-white mt-4">Pemberdayaan Karyawan</h3>
+						<p class="mt-2 text-slate-400">Absen dengan verifikasi wajah & lokasi, ajukan izin/sakit, catat laporan kerja, hingga lihat rekap performa kehadiran pribadi. Semua dalam satu aplikasi.</p>
+					</div>
+					<div class="glass-card p-8 rounded-xl" data-aos="fade-up" data-aos-delay="300">
+						<h3 class="font-bold text-xl text-white mt-4">Kontrol Penuh untuk Admin</h3>
+						<p class="mt-2 text-slate-400">Manajemen karyawan, shift, dan radius lokasi (mitra) dengan mudah. Tarik semua rekap laporan (absensi, lembur, izin) dalam format PDF siap pakai.</p>
+					</div>
+					<div class="glass-card p-8 rounded-xl" data-aos="fade-up" data-aos-delay="400">
+						<h3 class="font-bold text-xl text-white mt-4">Fitur Unik & Fleksibel</h3>
+						<p class="mt-2 text-slate-400">Terdapat integrasi opsional seperti fitur Slip Gaji dan Baca Al-Quran untuk menambah nilai lebih bagi perusahaan dan karyawan Anda.</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section id="harga" class="py-20 md:py-24">
+			<div class="container mx-auto px-6 text-center">
+				<h2 class="text-3xl md:text-4xl font-bold text-white" data-aos="fade-up">Investasi Terbaik untuk Efisiensi Tim</h2>
+				<p class="mt-4 text-lg text-slate-400 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">Pilih paket yang tumbuh bersama bisnis Anda. Tanpa biaya tersembunyi.</p>
+				<div class="grid lg:grid-cols-3 gap-8 mt-12 max-w-6xl mx-auto">
+					<div class="glass-card rounded-xl p-8 flex flex-col" data-aos="fade-up" data-aos-delay="200">
+						<h3 class="font-bold text-2xl text-white">Regular</h3>
+						<p class="text-slate-400 mt-2">Untuk tim solid & startup.</p>
+						<div class="mt-6"><span class="text-5xl font-extrabold text-white">Rp150rb</span><span class="text-slate-400">/bln</span></div>
+						<p class="mt-6 text-slate-300">Fitur esensial untuk memulai otomatisasi kehadiran.</p>
+						<ul class="mt-8 space-y-4 text-left flex-grow">
+							<li class="flex items-start"><span class="text-green-400 mr-3 mt-1">✓</span><span><b>Hingga 10 Karyawan</b></span></li>
+							<li class="flex items-start"><span class="text-green-400 mr-3 mt-1">✓</span><span>Absensi Geolocation & Foto Wajah</span></li>
+							<li class="flex items-start"><span class="text-green-400 mr-3 mt-1">✓</span><span>Form Izin/Sakit Online</span></li>
+							<li class="flex items-start"><span class="text-green-400 mr-3 mt-1">✓</span><span>Rekap Absensi PDF (Admin)</span></li>
+						</ul>
+						<a href="#" class="mt-8 w-full block text-center bg-slate-600/50 text-white font-semibold py-3 rounded-lg border border-slate-600 hover:bg-slate-700/70 transition-colors">Pilih Paket</a>
+					</div>
+
+					<div class="glass-card rounded-xl p-8 flex flex-col relative shadow-2xl border-2 border-indigo-500 transform lg:scale-105" data-aos="fade-up" data-aos-delay="300">
+						<span class="absolute top-0 -translate-y-1/2 bg-indigo-500 text-white text-sm font-bold px-4 py-1 rounded-full left-1/2 -translate-x-1/2">PALING POPULER</span>
+						<h3 class="font-bold text-2xl text-white">Business</h3>
+						<p class="text-slate-400 mt-2">Untuk bisnis berkembang pesat.</p>
+						<div class="mt-6"><span class="text-5xl font-extrabold text-white">Rp450rb</span><span class="text-slate-400">/bln</span></div>
+						<p class="mt-6 text-slate-300">Alat manajemen lengkap untuk operasional yang dinamis.</p>
+						<ul class="mt-8 space-y-4 text-left flex-grow">
+							<li class="flex items-start"><span class="text-indigo-400 mr-3 mt-1">✓</span><span><b>Hingga 50 Karyawan</b></span></li>
+							<li class="flex items-start"><span class="text-indigo-400 mr-3 mt-1">✓</span><span>Semua di Regular + <b>Manajemen Shift & Jadwal</b></span></li>
+							<li class="flex items-start"><span class="text-indigo-400 mr-3 mt-1">✓</span><span><b>Manajemen & Rekap Lembur</b></span></li>
+							<li class="flex items-start"><span class="text-indigo-400 mr-3 mt-1">✓</span><span><b>Laporan Pekerjaan Karyawan</b></span></li>
+							<li class="flex items-start"><span class="text-indigo-400 mr-3 mt-1">✓</span><span>Manajemen Role System (Admin)</span></li>
+						</ul>
+						<a href="#" class="mt-8 w-full block text-center bg-indigo-500 text-white font-bold py-3 rounded-lg hover:bg-indigo-600 transition-colors shadow-lg shadow-indigo-500/30">Pilih Paket</a>
+					</div>
+					
+					<div class="glass-card rounded-xl p-8 flex flex-col" data-aos="fade-up" data-aos-delay="400">
+						<h3 class="font-bold text-2xl text-white">Professional</h3>
+						<p class="text-slate-400 mt-2">Untuk skala enterprise.</p>
+						<div class="mt-6"><span class="text-4xl font-bold text-white">Hubungi Kami</span></div>
+						<p class="mt-6 text-slate-300">Solusi kustom dan fitur premium untuk perusahaan Anda.</p>
+						<ul class="mt-8 space-y-4 text-left flex-grow">
+							<li class="flex items-start"><span class="text-green-400 mr-3 mt-1">✓</span><span><b>Karyawan Tanpa Batas</b></span></li>
+							<li class="flex items-start"><span class="text-green-400 mr-3 mt-1">✓</span><span>Semua di Business + <b>Manajemen Mitra (Radius)</b></span></li>
+							<li class="flex items-start"><span class="text-green-400 mr-3 mt-1">✓</span><span><b>Fitur Slip Gaji (Opsional)</b></span></li>
+							<li class="flex items-start"><span class="text-green-400 mr-3 mt-1">✓</span><span><b>Kustomisasi Nama & Logo Perusahaan</b></span></li>
+						</ul>
+						<a href="#" class="mt-8 w-full block text-center bg-slate-600/50 text-white font-semibold py-3 rounded-lg border border-slate-600 hover:bg-slate-700/70 transition-colors">Hubungi Sales</a>
+					</div>
+				</div>
+			</div>
+		</section>
+		
+		<section id="perbandingan" class="py-20 md:py-24">
+			<div class="container mx-auto px-6 text-center">
+				<h2 class="text-3xl md:text-4xl font-bold text-white" data-aos="fade-up">Bukan Sekadar Kata-Kata, Ini Datanya</h2>
+				<p class="mt-4 text-lg text-slate-400 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">Bandingkan secara transparan dan temukan paket yang paling sesuai.</p>
+				<div class="mt-12 w-full max-w-5xl mx-auto" data-aos="fade-up" data-aos-delay="200">
+					<!-- Tampilan Desktop: Tabel -->
+					<div class="hidden lg:block glass-card rounded-xl shadow-lg overflow-hidden">
+						<div class="overflow-x-auto">
+							<table class="w-full text-left min-w-max">
+								<thead>
+									<tr class="border-b border-white/10">
+										<th class="p-6 font-bold text-lg text-white">Fitur Inti</th>
+										<th class="p-6 font-bold text-center">Regular</th>
+										<th class="p-6 font-bold text-center text-indigo-400">Business</th>
+										<th class="p-6 font-bold text-center">Professional</th>
+									</tr>
+								</thead>
+								<tbody class="divide-y divide-white/10">
+									<tr><td colspan="4" class="p-3 bg-slate-800/30 text-sm font-bold text-slate-300">Fitur Karyawan</td></tr>
+									<tr class="hover:bg-slate-700/30 transition-colors">
+                                        <td class="p-5 font-semibold">Batas Karyawan</td>
+                                        <td class="p-5 text-center text-white font-bold">10</td>
+                                        <td class="p-5 text-center text-white font-bold">50</td>
+                                        <td class="p-5 text-center text-white font-bold">Unlimited</td>
+                                    </tr>
+									<tr class="hover:bg-slate-700/30 transition-colors">
+										<td class="p-5 font-semibold">Laporan Pekerjaan Harian</td>
+										<td class="p-5 text-center text-red-400 font-bold">✕</td>
+										<td class="p-5 text-center text-green-400 font-bold">✓</td>
+										<td class="p-5 text-center text-green-400 font-bold">✓</td>
+									</tr>
+									<tr class="hover:bg-slate-700/30 transition-colors">
+										<td class="p-5 font-semibold">Integrasi Baca Al-Quran</td>
+										<td class="p-5 text-center text-green-400 font-bold">✓</td>
+										<td class="p-5 text-center text-green-400 font-bold">✓</td>
+										<td class="p-5 text-center text-green-400 font-bold">✓</td>
+									</tr>
+									<tr><td colspan="4" class="p-3 bg-slate-800/30 text-sm font-bold text-slate-300">Fitur Admin</td></tr>
+									<tr class="hover:bg-slate-700/30 transition-colors">
+										<td class="p-5 font-semibold">Manajemen Shift & Lembur</td>
+										<td class="p-5 text-center text-green-400 font-bold">✓</td>
+										<td class="p-5 text-center text-green-400 font-bold">✓</td>
+										<td class="p-5 text-center text-green-400 font-bold">✓</td>
+									</tr>
+									<tr class="hover:bg-slate-700/30 transition-colors">
+										<td class="p-5 font-semibold">Manajemen Mitra (Radius Geolocation)</td>
+										<td class="p-5 text-center text-red-400 font-bold">✕</td>
+										<td class="p-5 text-center text-red-400 font-bold">✕</td>
+										<td class="p-5 text-center text-green-400 font-bold">✓</td>
+									</tr>
+									<tr class="hover:bg-slate-700/30 transition-colors">
+                                        <td class="p-5 font-semibold">Aplikasi Android</td>
+                                        <td class="p-5 text-center text-red-400 font-bold">✕</td>
+                                        <td class="p-5 text-center text-green-400 font-bold">✓</td>
+                                        <td class="p-5 text-center text-green-400 font-bold">✓</td>
+                                    </tr>
+									<tr class="hover:bg-slate-700/30 transition-colors">
+										<td class="p-5 font-semibold">Fitur Slip Gaji (Opsional)</td>
+										<td class="p-5 text-center text-red-400 font-bold">✕</td>
+										<td class="p-5 text-center text-red-400 font-bold">✕</td>
+										<td class="p-5 text-center text-green-400 font-bold">✓</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<!-- Tampilan Mobile: Kartu -->
+					<div class="block lg:hidden space-y-6">
+						<!-- Grup Fitur -->
+						<div>
+							<h3 class="text-xl font-bold text-white mb-4">Fitur Karyawan</h3>
+							<div class="space-y-4">
+								<div class="glass-card rounded-lg p-4 text-left">
+                                    <p class="font-semibold text-white">Batas Karyawan</p>
+                                    <div class="mt-3 space-y-2 text-sm border-t border-white/10 pt-3">
+                                        <div class="flex justify-between items-center"><span class="text-slate-400">Regular</span><span class="text-white font-bold">10</span></div>
+                                        <div class="flex justify-between items-center"><span class="text-indigo-400 font-semibold">Business</span><span class="text-white font-bold">50</span></div>
+                                        <div class="flex justify-between items-center"><span class="text-slate-400">Professional</span><span class="text-white font-bold">Unlimited</span></div>
+                                    </div>
+                                </div>
+								<div class="glass-card rounded-lg p-4 text-left">
+									<p class="font-semibold text-white">Laporan Pekerjaan Harian</p>
+									<div class="mt-3 space-y-2 text-sm border-t border-white/10 pt-3">
+										<div class="flex justify-between items-center"><span class="text-slate-400">Regular</span><span class="text-red-400 font-bold">✕</span></div>
+										<div class="flex justify-between items-center"><span class="text-indigo-400 font-semibold">Business</span><span class="text-green-400 font-bold">✓</span></div>
+										<div class="flex justify-between items-center"><span class="text-slate-400">Professional</span><span class="text-green-400 font-bold">✓</span></div>
+									</div>
+								</div>
+								<div class="glass-card rounded-lg p-4 text-left">
+									<p class="font-semibold text-white">Integrasi Baca Al-Quran</p>
+									<div class="mt-3 space-y-2 text-sm border-t border-white/10 pt-3">
+										<div class="flex justify-between items-center"><span class="text-slate-400">Regular</span><span class="text-green-400 font-bold">✓</span></div>
+										<div class="flex justify-between items-center"><span class="text-indigo-400 font-semibold">Business</span><span class="text-green-400 font-bold">✓</span></div>
+										<div class="flex justify-between items-center"><span class="text-slate-400">Professional</span><span class="text-green-400 font-bold">✓</span></div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- Grup Fitur -->
+						<div>
+							<h3 class="text-xl font-bold text-white mb-4">Fitur Admin</h3>
+							<div class="space-y-4">
+								<div class="glass-card rounded-lg p-4 text-left">
+									<p class="font-semibold text-white">Manajemen Shift & Lembur</p>
+									<div class="mt-3 space-y-2 text-sm border-t border-white/10 pt-3">
+										<div class="flex justify-between items-center"><span class="text-slate-400">Regular</span><span class="text-green-400 font-bold">✓</span></div>
+										<div class="flex justify-between items-center"><span class="text-indigo-400 font-semibold">Business</span><span class="text-green-400 font-bold">✓</span></div>
+										<div class="flex justify-between items-center"><span class="text-slate-400">Professional</span><span class="text-green-400 font-bold">✓</span></div>
+									</div>
+								</div>
+								<div class="glass-card rounded-lg p-4 text-left">
+									<p class="font-semibold text-white">Manajemen Mitra (Radius Geolocation)</p>
+									<div class="mt-3 space-y-2 text-sm border-t border-white/10 pt-3">
+										<div class="flex justify-between items-center"><span class="text-slate-400">Regular</span><span class="text-red-400 font-bold">✕</span></div>
+										<div class="flex justify-between items-center"><span class="text-indigo-400 font-semibold">Business</span><span class="text-red-400 font-bold">✕</span></div>
+										<div class="flex justify-between items-center"><span class="text-slate-400">Professional</span><span class="text-green-400 font-bold">✓</span></div>
+									</div>
+								</div>
+								<div class="glass-card rounded-lg p-4 text-left">
+                                    <p class="font-semibold text-white">Aplikasi Android</p>
+                                    <div class="mt-3 space-y-2 text-sm border-t border-white/10 pt-3">
+                                        <div class="flex justify-between items-center"><span class="text-slate-400">Regular</span><span class="text-red-400 font-bold">✕</span></div>
+                                        <div class="flex justify-between items-center"><span class="text-indigo-400 font-semibold">Business</span><span class="text-green-400 font-bold">✓</span></div>
+                                        <div class="flex justify-between items-center"><span class="text-slate-400">Professional</span><span class="text-green-400 font-bold">✓</span></div>
+                                    </div>
+                                </div>
+								<div class="glass-card rounded-lg p-4 text-left">
+									<p class="font-semibold text-white">Fitur Slip Gaji (Opsional)</p>
+									<div class="mt-3 space-y-2 text-sm border-t border-white/10 pt-3">
+										<div class="flex justify-between items-center"><span class="text-slate-400">Regular</span><span class="text-red-400 font-bold">✕</span></div>
+										<div class="flex justify-between items-center"><span class="text-indigo-400 font-semibold">Business</span><span class="text-red-400 font-bold">✕</span></div>
+										<div class="flex justify-between items-center"><span class="text-slate-400">Professional</span><span class="text-green-400 font-bold">✓</span></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="border-t border-white/10 py-12">
+		<div class="container mx-auto px-6 text-center">
+			<a href="/" class="text-2xl font-extrabold text-white">Absensi<span class="text-indigo-400">Pro</span></a>
+			<p class="mt-4 text-slate-400">Sistem Absensi Cerdas.</p>
+			<div class="mt-6"><p class="text-sm text-slate-500">&copy; {new Date().getFullYear()} AbsensiPro. Semua Hak Cipta Dilindungi.</p></div>
+		</div>
+	</footer>
+	<!-- Script untuk AOS & Menu Mobile -->
+	<!-- <script src="https://unpkg.com/aos@next/dist/aos.js"></script> -->
+	<script>
+		// Inisialisasi AOS
+		import AOS from "aos";
+		AOS.init({
+			duration: 700, // Durasi animasi
+			once: true, // Animasi hanya berjalan sekali
+		});
+
+		// Script untuk toggle menu mobile
+		const mobileMenuButton = document.getElementById('mobile-menu-button');
+		const mobileMenu = document.getElementById('mobile-menu');
+		mobileMenuButton?.addEventListener('click', () => {
+			mobileMenu?.classList.toggle('hidden');
+		});
+		const mobileMenuLinks = mobileMenu?.querySelectorAll('a');
+		mobileMenuLinks?.forEach(link => {
+			link.addEventListener('click', () => {
+				mobileMenu?.classList.add('hidden');
+			});
+		});
+	</script>
+
+</body>
+</html>
